@@ -92,10 +92,16 @@ class UserController {
                 where: { id: user.id }
             })
             res.cookie("refreshToken", refreshToken, {
+                // domain: "http://localhost:3000",
                 httpOnly: true,
                 maxAge: 24 * 60 * 60000,
-                secure: true
+                secure: true,
+                sameSite: "none",
+                // path: '/home'
             })
+            // Cookies.set('refreshToken', '1', { sameSite: 'none', secure: true }) // again, example
+            // res.setHeader('Access-Control-Allow-Origin', 'http://192.168.1.5:3000');
+            // res.setHeader('Access-Control-Allow-Credentials', true);
 
             res.status(201).json({
                 id: user.id,
@@ -254,6 +260,8 @@ class UserController {
                 if (err) return res.sendStatus(403)
                 const accessToken = this.createTokenFromUser(user)
                 res.json({ accessToken })
+                // res.setHeader('Access-Control-Allow-Origin', 'http://192.168.1.5:3000');
+                // res.setHeader('Access-Control-Allow-Credentials', true);
             })
         } catch (error) {
             console.log(error)
